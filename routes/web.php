@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('command/migrate', function () {
+    Artisan::call('migrate:fresh', [
+        '--seed' => true
+    ]);
+    Artisan::output();
+});
