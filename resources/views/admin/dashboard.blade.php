@@ -7,5 +7,5 @@
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    <p>Welcome to <b>TeleCoin</b> dashboard</p>
 @stop

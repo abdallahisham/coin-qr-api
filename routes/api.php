@@ -2,6 +2,7 @@
 
 use App\Card;
 use App\User;
+use App\Transfer;
 use Endroid\QrCode\QrCode;
 use Illuminate\Http\Request;
 
@@ -47,7 +48,7 @@ Route::post('generate-card', function () {
                 'image_url' => env('APP_URL') . ':' . env('APP_PORT') . "/qr-codes/{$card->number}qrcode.png"
             ];
         case 'number':
-            return $card->number;
+            return ['number' => $card->number];
         default:
             return [
                 'httpCode' => 400,
@@ -91,6 +92,10 @@ Route::middleware('auth:api')->post('transfer', function () {
     $receiver = User::where('phone', $phone)->firstOrFail();
     
     if ($sender->balance >= $amount) {
+        $transfer = new Transfer(['amount' => $amount]);
+        $transfer->sender_id = $sender->id;
+        $transfer->receiver_id = $receiver->id;
+        $transfer->save();
         $sender->balance -= $amount;
         $sender->save();
         $receiver->suspended_balance += $amount;
