@@ -97,9 +97,8 @@ Route::middleware('auth:api')->post('transfer', function () {
         $transfer->receiver_id = $receiver->id;
         $transfer->save();
         $sender->balance -= $amount;
+        $sender->suspended_balance += $amount;
         $sender->save();
-        $receiver->suspended_balance += $amount;
-        $receiver->save();
 
         return [
             'httpCode' => 200,
