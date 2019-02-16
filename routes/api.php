@@ -30,12 +30,12 @@ Route::post('generate-card', function () {
     try {
         $card = Card::create([
             'amount' => $amount,
-            'number' => rand(130320330326652, 999999999999999)
+            'number' => rand(156412345, 999999999)
         ]);
     } catch (Illuminate\Database\QueryException $e) {
         $card = Card::create([
             'amount' => $amount,
-            'number' => rand(130320330326652, 999999999999999)
+            'number' => rand(156412345, 999999999)
         ]);
     }
 
