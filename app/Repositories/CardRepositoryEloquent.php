@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Card;
 use App\Repositories\Contracts\CardRepository;
-use App\Validators\CardValidator;
 use Illuminate\Database\QueryException;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
@@ -29,18 +28,17 @@ class CardRepositoryEloquent extends BaseRepository implements CardRepository
 
     public function createCard($amount)
     {
-        $randomNumber = time() % 100000 . rand(1201231451, 9999999999);
+        $randomNumber = time() % 1000 . rand(120232, 999999);
         try {
             $card = $this->create([
                 'amount' => $amount,
                 'number' => $randomNumber
             ]);
-        } catch(QueryException $e) {
+        } catch (QueryException $e) {
             if ($e->getCode() === 1062) {
                 $this->createCard($amount);
             }
         }
         return $card;
     }
-    
 }

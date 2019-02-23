@@ -3,17 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class Card.
  *
  * @package namespace App\Models;
  */
-class Card extends Model implements Transformable
+class Card extends Model
 {
-    use TransformableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -23,5 +20,4 @@ class Card extends Model implements Transformable
     protected $fillable = [
         'amount', 'number'
     ];
-
 }

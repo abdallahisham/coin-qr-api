@@ -17,6 +17,6 @@ class GenerateCardTest extends TestCase
             'type' => 'number',
         ]);
 
-        $response->assertStatus(201);
+        $response->assertJson(['httpCode' => 201]);
     }
 }

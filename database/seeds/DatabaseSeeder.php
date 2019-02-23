@@ -15,24 +15,21 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
         User::create([
             'name' => 'Ahmed Mohammed',
-            'email' => 'user1@gmail.com',
             'phone' => '5000000001',
             'token' => 'user1',
-            'password' => bcrypt('123456'),
+            'balance' => 500.0
         ]);
         User::create([
             'name' => 'Mohammed Ali',
-            'email' => 'user2@gmail.com',
             'phone' => '5000000002',
             'token' => 'user2',
-            'password' => bcrypt('123456'),
+            'balance' => 500.0
         ]);
         User::create([
             'name' => 'Adel Khalid',
-            'email' => 'user3@gmail.com',
             'phone' => '5000000003',
             'token' => 'user3',
-            'password' => bcrypt('123456'),
+            'balance' => 500.0
         ]);
     }
 }

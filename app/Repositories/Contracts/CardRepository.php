@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CardRepository extends RepositoryInterface
 {
-    public function generateCard($amount);
+    public function createCard($amount);
 }

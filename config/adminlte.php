@@ -108,12 +108,12 @@ return [
     */
 
     'menu' => [
-        'TRANSFERS',
+        /*'TRANSFERS',
         [
             'text'        => 'View transfers',
             'url'         => 'admin/transfers',
             'icon'        => 'money',
-        ]
+        ]*/
     ],
 
     /*

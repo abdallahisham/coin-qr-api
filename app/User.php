@@ -2,8 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'phone',
     ];
 
     /**
@@ -27,4 +27,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function generateToken()
+    {
+        $this->token = Str::random(10);
+        $this->save();
+    }
+
+    public function generateOtp()
+    {
+        // $this->password = time() % 100 . rand(1000, 9999);
+        $this->password = '100200';
+        $this->save();
+    }
 }
