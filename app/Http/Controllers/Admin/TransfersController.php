@@ -10,8 +10,8 @@ class TransfersController extends Controller
 {
     public function index()
     {
-        $transfers = Transfer::with(['sender', 'receiver'])->orderByDesc('created_at')->get();
-        return view('admin.transfers.index', compact('transfers'));
+        // $transfers = Transfer::with(['sender', 'receiver'])->orderByDesc('created_at')->get();
+        // return view('admin.transfers.index', compact('transfers'));
     }
 
     public function confirm(Transfer $transfer)
@@ -22,7 +22,7 @@ class TransfersController extends Controller
         $sender->save();
         $receiver->balance += $transfer->amount;
         $receiver->save();
-        
+
         $transfer->status = 1;
         $transfer->save();
 

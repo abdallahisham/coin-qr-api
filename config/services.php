@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
@@ -39,5 +38,9 @@ return [
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
-
+    'nexmo' => [
+        'key' => '32f39b46',
+        'secret' => 'OY4FZfgCwI6Cjo27',
+        'sms_from' => '966552885509',
+    ],
 ];

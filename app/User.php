@@ -36,8 +36,7 @@ class User extends Authenticatable
 
     public function generateOtp()
     {
-        // $this->password = time() % 100 . rand(1000, 9999);
-        $this->password = '100200';
+        $this->password = time() % 1000 .rand(233, 999);
         $this->save();
     }
 }
