@@ -57,7 +57,7 @@ class CardsController extends Controller
     public function recharge(Request $request)
     {
         $number = request('number');
-        $card = Card::where('number', $number)->first();
+        $card = Card::where('number', $number)->firstOrFail();
         $user = $request->user();
         if (0 == $card->status) {
             $user->balance += $card->amount;
