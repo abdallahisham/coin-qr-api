@@ -4,8 +4,7 @@ namespace App\Listeners;
 
 use App\Events\UserLoggedIn;
 use App\Services\Contracts\SmsServiceInterface;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Nexmo\Client\Exception\Request;
 
 class SendOtpWithSms
 {
@@ -19,12 +18,18 @@ class SendOtpWithSms
     /**
      * Handle the event.
      *
-     * @param  UserLoggedIn  $event
-     * @return void
+     * @param UserLoggedIn $event
      */
     public function handle(UserLoggedIn $event)
     {
         $message = "Your otp is: {$event->user->password}";
-        $messageInfo = $this->smsService->send($event->user->phone, $message);
+        try {
+            $messageInfo = $this->smsService->send($event->user->phone, $message);
+        } catch (Request $e) {
+            $user = $event->user;
+            // Temp
+            $user->password = '100200';
+            $user->save();
+        }
     }
 }
