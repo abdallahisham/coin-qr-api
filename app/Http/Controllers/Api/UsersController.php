@@ -30,10 +30,7 @@ class UsersController extends Controller
         $user->generateOtp();
         event(new UserLoggedIn($user));
 
-        return [
-            'id' => $user->id,
-            'name' => $user->name,
-        ];
+        return $user;
     }
 
     public function checkOtp(Request $request)
