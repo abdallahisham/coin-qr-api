@@ -44,7 +44,10 @@ class CardsController extends Controller
                     'image_url' => env('APP_URL').':'.env('APP_PORT')."/qr-codes/{$card->number}qrcode.png",
                 ];
             case 'number':
-                return ['number' => $card->number];
+                return [
+                    'httpCode' => 201,
+                    'number' => $card->number,
+                ];
             default:
                 return [
                     'httpCode' => 400,

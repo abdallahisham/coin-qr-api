@@ -24,6 +24,7 @@ class TransfersController extends Controller
             try {
                 DB::transaction(function () use ($sender, $receiver, $amount) {
                     // Sub the amount from sender balance and put it on suspended balance
+                    $sender->refresh();
                     $sender->balance -= $amount;
                     $sender->suspended_balance += $amount;
                     $sender->save();
@@ -33,6 +34,7 @@ class TransfersController extends Controller
                     $transfer->sender_id = $sender->id;
                     $transfer->receiver_id = $receiver->id;
                     // Add the amount to receiver balance
+                    $receiver->refresh();
                     $receiver->balance += $amount;
                     $receiver->save();
                     // Sub the amount from suspended balance of sender
@@ -42,6 +44,7 @@ class TransfersController extends Controller
                     $transfer->status = 1;
                     $transfer->save();
                 });
+
                 return [
                     'httpCode' => 200,
                     'msg' => 'Transferred successfully!',

@@ -17,6 +17,6 @@ class GenerateCardTest extends TestCase
             'type' => 'number',
         ]);
 
-        $response->assertJson(['httpCode' => 201]);
+        $response->assertJsonFragment(['httpCode' => 201]);
     }
 }

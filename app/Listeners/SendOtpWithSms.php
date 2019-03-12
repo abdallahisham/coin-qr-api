@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\UserLoggedIn;
 use App\Services\Contracts\SmsServiceInterface;
-use Nexmo\Client\Exception\Request;
+use Nexmo\Client\Exception\Request as NexmoRequestException;
 
 class SendOtpWithSms
 {
@@ -25,7 +25,7 @@ class SendOtpWithSms
         $message = "Your otp is: {$event->user->password}";
         try {
             $messageInfo = $this->smsService->send($event->user->phone, $message);
-        } catch (Request $e) {
+        } catch (NexmoRequestException $e) {
             $user = $event->user;
             // Temp
             $user->password = '100200';

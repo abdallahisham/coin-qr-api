@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\ApiClient;
 use App\Services\Contracts\SmsServiceInterface;
 use App\Services\NexmoSmsService;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +15,6 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register()
     {
@@ -26,8 +23,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(Client::class, function () {
             $key = config('services.nexmo.key');
             $secret = config('services.nexmo.secret');
-            $basic  = new Client\Credentials\Basic($key, $secret);
-           return new Client($basic);
+            $basic = new Client\Credentials\Basic($key, $secret);
+
+            return new Client($basic);
         });
 
         $this->app->bind(SmsServiceInterface::class, NexmoSmsService::class);
@@ -35,8 +33,6 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot()
     {
