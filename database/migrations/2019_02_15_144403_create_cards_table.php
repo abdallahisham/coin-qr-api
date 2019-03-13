@@ -8,13 +8,11 @@ class CreateCardsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create('cards', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->double('amount');
             $table->string('number')->unique();
             $table->boolean('status')->default(0);
@@ -24,8 +22,6 @@ class CreateCardsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -8,13 +8,11 @@ class CreateTransfersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create('transfers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('sender_id')->index();
             $table->unsignedInteger('receiver_id')->index();
             $table->double('amount');
@@ -25,8 +23,6 @@ class CreateTransfersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
