@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Domain\Transaction\Entity\Card;
-use Domain\Transaction\ValueObject\Money;
 use Tests\TestCase;
+use App\Domain\Card\Entity\Card;
+use App\Domain\Generic\ValueObject\Money;
 
 class CardTest extends TestCase
 {

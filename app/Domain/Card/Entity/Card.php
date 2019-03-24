@@ -2,8 +2,8 @@
 
 namespace App\Domain\Card\Entity;
 
-use Domain\Transaction\ValueObject\Card\CardId;
-use Domain\Transaction\ValueObject\Money;
+use App\Domain\Card\ValueObject\CardId;
+use App\Domain\Generic\ValueObject\Money;
 
 /**
  * class Card.

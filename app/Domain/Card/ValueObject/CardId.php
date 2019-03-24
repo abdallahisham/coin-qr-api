@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Transaction\ValueObject\Card;
+namespace App\Domain\Card\ValueObject;
 
 use Ramsey\Uuid\Uuid;
 

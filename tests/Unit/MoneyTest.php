@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Domain\Transaction\ValueObject\Money;
 use Tests\TestCase;
+use App\Domain\Generic\ValueObject\Money;
 
 class MoneyTest extends TestCase
 {

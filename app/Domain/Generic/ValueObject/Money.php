@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Transaction\ValueObject;
+namespace App\Domain\Generic\ValueObject;
 
 /**
  * class Amount.
