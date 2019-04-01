@@ -1,0 +1,31 @@
+namespace: App\Domain\Transaction
+commands:
+    CreateTransaction:
+        fields:
+            sender:
+                type: string
+                example: example-user
+            receiver:
+                type: string
+                example: list-name
+            amount:
+                type: string
+                example: list-name
+            type:
+                type: string
+                example: list-name
+events:
+    TransactionCreated:
+        fields:
+            sender:
+                type: string
+                example: example-user
+            receiver:
+                type: string
+                example: list-name
+            amount:
+                type: string
+                example: list-name
+            type:
+                type: string
+                example: list-name

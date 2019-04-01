@@ -19,14 +19,12 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
     public function boot()
     {
         $this->registerPolicies();
 
-        Auth::viaRequest('my-token', function ($request) {
+        Auth::viaRequest('api-token', function ($request) {
             return User::where('token', $request->token)->first();
         });
     }
