@@ -1,4 +1,13 @@
 namespace: App\Domain\Transaction
+
+types:
+  transactionId:
+    type: TransactionId
+    serializer: >
+      {param}->toString()
+    deserializer: >
+      TransactionId::fromString({param})
+
 commands:
     CreateTransaction:
         fields:

@@ -9,10 +9,12 @@ return [
      * https://eventsauce.io/docs/getting-started/create-events-and-commands
      */
     'code_generation' => [
+        // Transaction Domain
         [
-            'input_yaml_file' => config_path('eventsauce-structure.yml'),
-            'output_file' => app_path('eventsauce-classes.php'),
+            'input_yaml_file' => app_path('Domain/Transaction/eventsauce-commands-and-events.yml'),
+            'output_file' => app_path('Domain/Transaction/eventsauce-commands-and-events.php'),
         ],
+        // Card Domain
     ],
 
     /*
