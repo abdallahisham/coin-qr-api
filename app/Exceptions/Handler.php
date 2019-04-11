@@ -45,6 +45,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof TransactionNotCompleted) {
+            return new Response([
+                'httpCode' => $exception->getCode(),
+                'msg' => $exception->getMessage(),
+            ]);
+        }
+
         return parent::render($request, $exception);
     }
 }

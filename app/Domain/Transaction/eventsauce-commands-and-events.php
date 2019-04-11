@@ -7,6 +7,11 @@ use EventSauce\EventSourcing\Serialization\SerializableEvent;
 final class TransactionCreated implements SerializableEvent
 {
     /**
+     * @var TransactionId
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $sender;
@@ -21,21 +26,21 @@ final class TransactionCreated implements SerializableEvent
      */
     private $amount;
 
-    /**
-     * @var string
-     */
-    private $type;
-
     public function __construct(
+        TransactionId $id,
         string $sender,
         string $receiver,
-        string $amount,
-        string $type
+        string $amount
     ) {
+        $this->id = $id;
         $this->sender = $sender;
         $this->receiver = $receiver;
         $this->amount = $amount;
-        $this->type = $type;
+    }
+
+    public function id(): TransactionId
+    {
+        return $this->id;
     }
 
     public function sender(): string
@@ -52,80 +57,35 @@ final class TransactionCreated implements SerializableEvent
     {
         return $this->amount;
     }
-
-    public function type(): string
-    {
-        return $this->type;
-    }
     public static function fromPayload(array $payload): SerializableEvent
     {
         return new TransactionCreated(
+            TransactionId::fromString($payload['id']),
             (string) $payload['sender'],
             (string) $payload['receiver'],
-            (string) $payload['amount'],
-            (string) $payload['type']);
+            (string) $payload['amount']);
     }
 
     public function toPayload(): array
     {
         return [
+            'id' => $this->id->toString(),
             'sender' => (string) $this->sender,
             'receiver' => (string) $this->receiver,
             'amount' => (string) $this->amount,
-            'type' => (string) $this->type,
         ];
     }
 
     /**
      * @codeCoverageIgnore
      */
-    public function withSender(string $sender): TransactionCreated
-    {
-        $this->sender = $sender;
-
-        return $this;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function withReceiver(string $receiver): TransactionCreated
-    {
-        $this->receiver = $receiver;
-
-        return $this;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function withAmount(string $amount): TransactionCreated
-    {
-        $this->amount = $amount;
-
-        return $this;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function withType(string $type): TransactionCreated
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public static function with(): TransactionCreated
+    public static function withIdAndSenderAndReceiverAndAmount(TransactionId $id, string $sender, string $receiver, string $amount): TransactionCreated
     {
         return new TransactionCreated(
-            (string) 'example-user',
-            (string) 'list-name',
-            (string) 'list-name',
-            (string) 'list-name'
+            $id,
+            $sender,
+            $receiver,
+            $amount
         );
     }
 }
@@ -133,6 +93,11 @@ final class TransactionCreated implements SerializableEvent
 final class CreateTransaction
 {
     /**
+     * @var TransactionId
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $sender;
@@ -147,21 +112,21 @@ final class CreateTransaction
      */
     private $amount;
 
-    /**
-     * @var string
-     */
-    private $type;
-
     public function __construct(
+        TransactionId $id,
         string $sender,
         string $receiver,
-        string $amount,
-        string $type
+        string $amount
     ) {
+        $this->id = $id;
         $this->sender = $sender;
         $this->receiver = $receiver;
         $this->amount = $amount;
-        $this->type = $type;
+    }
+
+    public function id(): TransactionId
+    {
+        return $this->id;
     }
 
     public function sender(): string
@@ -177,10 +142,5 @@ final class CreateTransaction
     public function amount(): string
     {
         return $this->amount;
-    }
-
-    public function type(): string
-    {
-        return $this->type;
     }
 }

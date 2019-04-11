@@ -2,6 +2,7 @@
 
 namespace App\Domain\Transaction;
 
+use App\Domain\Transaction\Consumers\TransactionProjector;
 use Spatie\LaravelEventSauce\AggregateRootRepository;
 
 /** @method \App\Domain\Transaction\TransactionAggregateRoot retrieve */
@@ -15,6 +16,7 @@ class TransactionAggregateRootRepository extends AggregateRootRepository
 
     /** @var array */
     protected $consumers = [
+        TransactionProjector::class,
     ];
 
     /** @var array */

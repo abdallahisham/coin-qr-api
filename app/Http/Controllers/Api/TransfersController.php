@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
-use DB;
-use App\User;
-use Exception;
-use App\Models\Transfer;
-use Illuminate\Http\Request;
+use App\Domain\Transaction\CreateTransaction;
+use App\Domain\Transaction\TransactionCommandHandler;
+use App\Domain\Transaction\TransactionId;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TransferResource;
+use App\Models\Transfer;
+use App\User;
+use Illuminate\Http\Request;
 
 class TransfersController extends Controller
 {
+    protected $commandHandler;
+
+    public function __construct(TransactionCommandHandler $commandHandler)
+    {
+        $this->commandHandler = $commandHandler;
+    }
+
     public function transfer(Request $request)
     {
         $sender = $request->user();
@@ -20,47 +28,17 @@ class TransfersController extends Controller
 
         $receiver = User::where('phone', $phone)->firstOrFail();
 
-        if ($sender->balance >= $amount) {
-            try {
-                DB::transaction(function () use ($sender, $receiver, $amount) {
-                    // Sub the amount from sender balance and put it on suspended balance
-                    $sender->refresh();
-                    $sender->balance -= $amount;
-                    $sender->suspended_balance += $amount;
-                    $sender->save();
+        $this->commandHandler->handle(new CreateTransaction(
+            TransactionId::create(),
+            $sender->id,
+            $receiver->id,
+            $amount
+        ));
 
-                    // Start a new transfer operation
-                    $transfer = new Transfer(['amount' => $amount]);
-                    $transfer->sender_id = $sender->id;
-                    $transfer->receiver_id = $receiver->id;
-                    // Add the amount to receiver balance
-                    $receiver->refresh();
-                    $receiver->balance += $amount;
-                    $receiver->save();
-                    // Sub the amount from suspended balance of sender
-                    $sender->suspended_balance -= $amount;
-                    $sender->save();
-                    // Finally save the transfer operation
-                    $transfer->status = 1;
-                    $transfer->save();
-                });
-
-                return [
-                    'httpCode' => 200,
-                    'msg' => 'Transferred successfully!',
-                ];
-            } catch (Exception $e) {
-                return [
-                    'httpCode' => 500,
-                    'msg' => 'Transfer failed, Try again',
-                ];
-            }
-        } else {
-            return [
-                'httpCode' => 400,
-                'msg' => 'You have not enough balance for this operation',
-            ];
-        }
+        return [
+            'httpCode' => 200,
+            'msg' => 'Transferred successfully!',
+        ];
     }
 
     public function transactions(Request $request)

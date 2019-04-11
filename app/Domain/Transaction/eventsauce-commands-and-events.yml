@@ -11,30 +11,22 @@ types:
 commands:
     CreateTransaction:
         fields:
+            id:
+                type: transactionId
             sender:
                 type: string
-                example: example-user
             receiver:
                 type: string
-                example: list-name
             amount:
                 type: string
-                example: list-name
-            type:
-                type: string
-                example: list-name
 events:
     TransactionCreated:
         fields:
+            id:
+                type: transactionId
             sender:
                 type: string
-                example: example-user
             receiver:
                 type: string
-                example: list-name
             amount:
                 type: string
-                example: list-name
-            type:
-                type: string
-                example: list-name

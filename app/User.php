@@ -39,4 +39,9 @@ class User extends Authenticatable
         $this->password = time() % 1000 .rand(233, 999);
         $this->save();
     }
+
+    public function canTransfer($amount)
+    {
+        return $this->balance >= $amount;
+    }
 }

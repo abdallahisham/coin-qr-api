@@ -28,6 +28,6 @@ class TransactionId implements AggregateRootId
 
     public static function create(): self
     {
-        return new static(Uuid::uuid4());
+        return self::fromString((string) Uuid::uuid4());
     }
 }
