@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Domain\Transaction;
+namespace App\Domain\Card;
 
 use EventSauce\EventSourcing\AggregateRootId;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-final class TransactionId implements AggregateRootId
+final class CardId implements AggregateRootId
 {
     /** @var \Ramsey\Uuid\UuidInterface */
     private $id;

@@ -1,0 +1,28 @@
+namespace: App\Domain\Card
+
+types:
+  cardId:
+    type: CardId
+    serializer: >
+      {param}->toString()
+    deserializer: >
+      CardId::fromString({param})
+
+commands:
+    CreateCard:
+        fields:
+            id:
+                type: cardId
+            amount:
+                type: string
+            type:
+                type: string
+events:
+    CardCreated:
+        fields:
+            id:
+                type: cardId
+            amount:
+                type: string
+            type:
+                type: string

@@ -6,7 +6,9 @@ use App\Domain\Transaction\CreateTransaction;
 use App\Domain\Transaction\TransactionCommandHandler;
 use App\Domain\Transaction\TransactionId;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TransactionCreateRequest;
 use App\Http\Resources\TransferResource;
+use App\Http\Responses\MessageResponse;
 use App\Models\Transfer;
 use App\User;
 use Illuminate\Http\Request;
@@ -20,12 +22,11 @@ class TransfersController extends Controller
         $this->commandHandler = $commandHandler;
     }
 
-    public function transfer(Request $request)
+    public function transfer(TransactionCreateRequest $request)
     {
-        $sender = $request->user();
-        $phone = request('phone');
-        $amount = request('amount');
+        [$phone, $amount] = $request->prepared();
 
+        $sender = $request->user();
         $receiver = User::where('phone', $phone)->firstOrFail();
 
         $this->commandHandler->handle(new CreateTransaction(
@@ -35,10 +36,7 @@ class TransfersController extends Controller
             $amount
         ));
 
-        return [
-            'httpCode' => 200,
-            'msg' => 'Transferred successfully!',
-        ];
+        return new MessageResponse('Transferred successfully!');
     }
 
     public function transactions(Request $request)

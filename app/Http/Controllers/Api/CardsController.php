@@ -2,58 +2,43 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Card;
-use Endroid\QrCode\QrCode;
-use Illuminate\Http\Request;
+use App\Domain\Card\CardCommandHandler;
+use App\Domain\Card\CardId;
+use App\Domain\Card\CreateCard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CardCreateRequest;
-use App\Repositories\Contracts\CardRepository;
+use App\Http\Responses\MessageResponse;
+use App\Http\Responses\QrCodeResponse;
+use App\Models\Card;
+use Illuminate\Http\Request;
 
 class CardsController extends Controller
 {
-    protected $cardRepository;
+    protected $commandHandler;
 
-    public function __construct(CardRepository $cardRepository)
+    public function __construct(CardCommandHandler $commandHandler)
     {
-        $this->cardRepository = $cardRepository;
+        $this->commandHandler = $commandHandler;
     }
 
     public function store(CardCreateRequest $request)
     {
-        $amount = request('amount');
-        $type = request('type');
-        try {
-            $card = Card::create([
-                'amount' => $amount,
-                'number' => rand(156412345, 999999999),
-            ]);
-        } catch (Illuminate\Database\QueryException $e) {
-            $card = Card::create([
-                'amount' => $amount,
-                'number' => rand(156412345, 999999999),
-            ]);
+        [$amount, $type] = $request->prepared();
+
+        $this->commandHandler->handle(new CreateCard(
+            CardId::create(),
+            $amount,
+            $type
+        ));
+
+        if ('image' === $type) {
+            return new QrCodeResponse($card);
         }
 
-        switch ($type) {
-            case 'image':
-                $qrCode = new QrCode($card->number);
-                $qrCode->setSize(300);
-                $qrCode->writeFile(public_path("qr-codes/{$card->number}qrcode.png"));
-
-                return [
-                    'image_url' => env('APP_URL').':'.env('APP_PORT')."/qr-codes/{$card->number}qrcode.png",
-                ];
-            case 'number':
-                return [
-                    'httpCode' => 201,
-                    'number' => $card->number,
-                ];
-            default:
-                return [
-                    'httpCode' => 400,
-                    'msg' => 'Bad amount',
-                ];
-                break;
+        if ('number' === $type) {
+            return new MessageResponse('Card created Successfully', 200, [
+                'number' => $card->getNumber(),
+            ]);
         }
     }
 

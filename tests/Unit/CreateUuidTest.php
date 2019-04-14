@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Domain\Transaction\TransactionId;
+use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class CreateUuidTest extends TestCase
@@ -12,6 +13,6 @@ class CreateUuidTest extends TestCase
     {
         $uuid = TransactionId::create();
 
-        $this->assertEquals(5, count(explode('-', (string) $uuid)));
+        $this->assertTrue(Uuid::isValid($uuid->toString()));
     }
 }

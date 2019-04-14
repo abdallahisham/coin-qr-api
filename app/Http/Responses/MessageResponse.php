@@ -2,24 +2,29 @@
 
 namespace App\Http\Responses;
 
-use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Http\JsonResponse;
 
-class MessageResponse implements Arrayable
+class MessageResponse implements Responsable
 {
     protected $message;
-    protected $code;
+    protected $status;
+    protected $payload;
 
-    public function __construct(string $message, int $code = 200)
+    public function __construct(string $message, int $status = 200, array $payload = [])
     {
         $this->message = $message;
-        $this->code = $code;
+        $this->status = $status;
+        $this->payload = $payload;
     }
 
-    public function toArray()
+    public function toResponse()
     {
-        return [
+        $response = array_merge([
+            'httpCode' => $this->status,
             'msg' => $this->message,
-            'httpCode' => $this->code,
-        ];
+        ], $this->payload);
+
+        return new JsonResponse($response, $this->status);
     }
 }

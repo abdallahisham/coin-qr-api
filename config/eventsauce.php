@@ -15,6 +15,10 @@ return [
             'output_file' => app_path('Domain/Transaction/eventsauce-commands-and-events.php'),
         ],
         // Card Domain
+        [
+            'input_yaml_file' => app_path('Domain/Card/eventsauce-commands-and-events.yml'),
+            'output_file' => app_path('Domain/Card/eventsauce-commands-and-events.php'),
+        ],
     ],
 
     /*

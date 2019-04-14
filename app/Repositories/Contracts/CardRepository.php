@@ -2,14 +2,13 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Domain\Card\CardEntity;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Interface CardRepository.
- *
- * @package namespace App\Repositories\Contracts;
  */
 interface CardRepository extends RepositoryInterface
 {
-    public function createCard($amount);
+    public function createCard($amount): CardEntity;
 }

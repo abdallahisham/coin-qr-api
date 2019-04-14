@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class CardCreateRequest extends FormRequest
+class TransactionCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,9 @@ class CardCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $sender = request()->user();
+
+        return 0 !== $sender->balance;
     }
 
     /**
@@ -25,16 +26,16 @@ class CardCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => ['required', Rule::in(config('telecoin.card_classes'))],
-            'type' => ['required', Rule::in(['number', 'image'])],
+            'phone' => ['required'],
+            'amount' => ['required'],
         ];
     }
 
     public function prepared()
     {
         return [
+            request('phone'),
             request('amount'),
-            request('type'),
         ];
     }
 }
