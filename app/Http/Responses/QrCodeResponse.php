@@ -30,7 +30,7 @@ class QrCodeResponse implements Responsable
         $qrCode->writeFile(public_path("qr-codes/{$this->card->getNumber()}qrcode.png"));
 
         return new JsonResponse([
-            'image_url' => env('APP_URL').':'.env('APP_PORT')."/qr-codes/{$this->card->getNumber()}qrcode.png",
+            'image_url' => env('APP_URL')."/qr-codes/{$this->card->getNumber()}qrcode.png",
             'amount' => $this->card->getAmount(),
             'msg' => 'Card generated succussfully!',
             'httpCode' => 200,

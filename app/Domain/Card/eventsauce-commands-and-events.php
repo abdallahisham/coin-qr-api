@@ -19,16 +19,16 @@ final class CardCreated implements SerializableEvent
     /**
      * @var string
      */
-    private $type;
+    private $number;
 
     public function __construct(
         CardId $id,
         string $amount,
-        string $type
+        string $number
     ) {
         $this->id = $id;
         $this->amount = $amount;
-        $this->type = $type;
+        $this->number = $number;
     }
 
     public function id(): CardId
@@ -41,16 +41,16 @@ final class CardCreated implements SerializableEvent
         return $this->amount;
     }
 
-    public function type(): string
+    public function number(): string
     {
-        return $this->type;
+        return $this->number;
     }
     public static function fromPayload(array $payload): SerializableEvent
     {
         return new CardCreated(
             CardId::fromString($payload['id']),
             (string) $payload['amount'],
-            (string) $payload['type']);
+            (string) $payload['number']);
     }
 
     public function toPayload(): array
@@ -58,19 +58,19 @@ final class CardCreated implements SerializableEvent
         return [
             'id' => $this->id->toString(),
             'amount' => (string) $this->amount,
-            'type' => (string) $this->type,
+            'number' => (string) $this->number,
         ];
     }
 
     /**
      * @codeCoverageIgnore
      */
-    public static function withIdAndAmountAndType(CardId $id, string $amount, string $type): CardCreated
+    public static function withIdAndAmountAndNumber(CardId $id, string $amount, string $number): CardCreated
     {
         return new CardCreated(
             $id,
             $amount,
-            $type
+            $number
         );
     }
 }
@@ -90,16 +90,16 @@ final class CreateCard
     /**
      * @var string
      */
-    private $type;
+    private $number;
 
     public function __construct(
         CardId $id,
         string $amount,
-        string $type
+        string $number
     ) {
         $this->id = $id;
         $this->amount = $amount;
-        $this->type = $type;
+        $this->number = $number;
     }
 
     public function id(): CardId
@@ -112,8 +112,8 @@ final class CreateCard
         return $this->amount;
     }
 
-    public function type(): string
+    public function number(): string
     {
-        return $this->type;
+        return $this->number;
     }
 }

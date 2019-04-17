@@ -15,7 +15,7 @@ class CardAggregateRoot implements AggregateRoot
         $this->recordThat(new CardCreated(
             $command->id(),
             $command->amount(),
-            $command->type()
+            $command->number()
         ));
     }
 

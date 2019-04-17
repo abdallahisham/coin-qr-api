@@ -8,6 +8,6 @@ class JobDispatcher
 {
     public function dispatch(JobInterface $job)
     {
-        $job->handle();
+        return $job->handle();
     }
 }

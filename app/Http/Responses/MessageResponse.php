@@ -18,7 +18,7 @@ class MessageResponse implements Responsable
         $this->payload = $payload;
     }
 
-    public function toResponse()
+    public function toResponse($request)
     {
         $response = array_merge([
             'httpCode' => $this->status,

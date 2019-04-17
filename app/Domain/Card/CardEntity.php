@@ -17,12 +17,7 @@ final class CardEntity
 
     public static function fromObject($object)
     {
-        $card = new self();
-        $card->setAmount($object->amount);
-        $card->setNumber($object->number);
-        $card->setStatus($object->status);
-
-        return $card;
+        return new static($object->amount, $object->number, $object->status);
     }
 
     public static function fromArray(array $data)

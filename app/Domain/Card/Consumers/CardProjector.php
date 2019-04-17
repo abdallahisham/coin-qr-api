@@ -3,8 +3,10 @@
 namespace App\Domain\Card\Consumers;
 
 use App\Domain\Card\CardCreated;
+use App\Domain\Card\Jobs\CreateCardJob;
 use App\Domain\Common\JobDispatcher;
 use EventSauce\EventSourcing\Consumer;
+use EventSauce\EventSourcing\Message;
 
 class CardProjector implements Consumer
 {
@@ -20,7 +22,10 @@ class CardProjector implements Consumer
         $event = $message->event();
 
         if ($event instanceof CardCreated) {
-            $this->dispatcher->dispatch(new CreateCard($event->amount(), $event->number()));
+            $this->dispatcher->dispatch(new CreateCardJob(
+                $event->amount(),
+                $event->number()
+            ));
 
             return;
         } elseif ($event) {

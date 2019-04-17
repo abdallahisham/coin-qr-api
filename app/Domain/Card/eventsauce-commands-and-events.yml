@@ -15,7 +15,7 @@ commands:
                 type: cardId
             amount:
                 type: string
-            type:
+            number:
                 type: string
 events:
     CardCreated:
@@ -24,5 +24,5 @@ events:
                 type: cardId
             amount:
                 type: string
-            type:
+            number:
                 type: string

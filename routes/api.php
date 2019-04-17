@@ -6,7 +6,7 @@ Route::middleware('auth:api')->post('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('generate-card', 'CardsController@store');
+Route::post('generate-card', 'CardsController@generate');
 
 Route::middleware('auth:api')->post('recharge', 'CardsController@recharge');
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Domain\Card\CardCommandHandler;
+use App\Domain\Card\CardEntity;
 use App\Domain\Card\CardId;
 use App\Domain\Card\CreateCard;
 use App\Http\Controllers\Controller;
@@ -21,25 +22,27 @@ class CardsController extends Controller
         $this->commandHandler = $commandHandler;
     }
 
-    public function store(CardCreateRequest $request)
+    public function generate(CardCreateRequest $request)
     {
         [$amount, $type] = $request->prepared();
+        $number = Card::newCardNumber();
 
         $this->commandHandler->handle(new CreateCard(
             CardId::create(),
             $amount,
-            $type
+            $number
         ));
+
+        $cardModel = Card::where('number', $number)->firstOrFail();
+        $card = CardEntity::fromObject($cardModel);
 
         if ('image' === $type) {
             return new QrCodeResponse($card);
         }
 
-        if ('number' === $type) {
-            return new MessageResponse('Card created Successfully', 200, [
-                'number' => $card->getNumber(),
-            ]);
-        }
+        return new MessageResponse('Card created Successfully', 200, [
+            'number' => $card->getNumber(),
+        ]);
     }
 
     public function recharge(Request $request)
