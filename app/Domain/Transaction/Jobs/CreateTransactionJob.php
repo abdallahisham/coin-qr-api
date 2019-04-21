@@ -24,7 +24,7 @@ class CreateTransactionJob implements JobInterface
         $receiver = User::findOrFail($this->event->receiver());
         $amount = $this->event->amount();
 
-        if ($sender->canTransfer($amount)) {
+        if ($sender->canTransferAmount($amount)) {
             try {
                 DB::transaction(function () use ($sender, $receiver, $amount) {
                     // Sub the amount from sender balance and put it on suspended balance

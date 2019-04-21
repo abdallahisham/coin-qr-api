@@ -30,7 +30,7 @@ class User extends Authenticatable
 
     public function generateToken()
     {
-        $this->token = Str::random(10);
+        $this->token = sha1(Str::random(10));
         $this->save();
     }
 
@@ -40,7 +40,7 @@ class User extends Authenticatable
         $this->save();
     }
 
-    public function canTransfer($amount)
+    public function canTransferAmount($amount)
     {
         return $this->balance >= $amount;
     }
