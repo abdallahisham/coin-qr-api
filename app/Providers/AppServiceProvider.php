@@ -2,15 +2,22 @@
 
 namespace App\Providers;
 
+use App\Domain\Card\Repositories\CardRepository;
+use App\Infrastructure\Card\EloquentCardRepository;
 use App\Services\Contracts\SmsServiceInterface;
 use App\Services\NexmoSmsService;
+use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Http\Resources\Json\Resource;
 use Nexmo\Client;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $bindings = [
+        SmsServiceInterface::class => NexmoSmsService::class,
+        CardRepository::class => EloquentCardRepository::class,
+    ];
+
     /**
      * Register any application services.
      */
@@ -23,8 +30,6 @@ class AppServiceProvider extends ServiceProvider
 
             return new Client($basic);
         });
-
-        $this->app->bind(SmsServiceInterface::class, NexmoSmsService::class);
     }
 
     /**
@@ -33,7 +38,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-
         Resource::withoutWrapping();
     }
 }

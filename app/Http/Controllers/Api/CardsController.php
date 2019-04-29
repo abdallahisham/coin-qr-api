@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Domain\Card\CardCommandHandler;
-use App\Domain\Card\CardEntity;
 use App\Domain\Card\CardId;
 use App\Domain\Card\CreateCard;
+use App\Domain\Card\Repositories\CardRepository;
+use App\Domain\Common\UserEntity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CardCreateRequest;
 use App\Http\Responses\MessageResponse;
@@ -16,10 +17,12 @@ use Illuminate\Http\Request;
 class CardsController extends Controller
 {
     protected $commandHandler;
+    protected $repository;
 
-    public function __construct(CardCommandHandler $commandHandler)
+    public function __construct(CardCommandHandler $commandHandler, CardRepository $repository)
     {
         $this->commandHandler = $commandHandler;
+        $this->repository = $repository;
     }
 
     public function generate(CardCreateRequest $request)
@@ -33,8 +36,7 @@ class CardsController extends Controller
             $number
         ));
 
-        $cardModel = Card::where('number', $number)->firstOrFail();
-        $card = CardEntity::fromObject($cardModel);
+        $card = $this->repository->findByNumber($number);
 
         if ('image' === $type) {
             return new QrCodeResponse($card);
@@ -47,24 +49,18 @@ class CardsController extends Controller
 
     public function recharge(Request $request)
     {
-        $number = request('number');
-        $card = Card::where('number', $number)->firstOrFail();
-        $user = $request->user();
-        if (0 == $card->status) {
-            $user->balance += $card->amount;
-            $user->save();
-            $card->status = 1;
-            $card->save();
+        $card = $this->repository->findByNumber(request('number'));
+        $user = UserEntity::fromObject($request->user());
 
-            return [
-                'httpCode' => 200,
-                'msg' => 'Card charged successfully',
-            ];
+        if ($card->isValid()) {
+            $this->commandHandler->handle(new RechargeCard(
+                CardId::create(),
+                $card->getNumber(),
+            ));
+
+            return new MessageResponse('Card charged successfully');
         } else {
-            return [
-                'httpCode' => 403,
-                'msg' => 'Sorry, This card is already entered',
-            ];
+            return new MessageResponse('Sorry, This card is already entered', 403);
         }
     }
 }

@@ -6,6 +6,10 @@ class CardCommandHandler
 {
     protected $repository;
 
+    protected $commandsMapping = [
+            CreateCard::class => 'createCard',
+    ];
+
     public function __construct(CardAggregateRootRepository $repository)
     {
         $this->repository = $repository;
@@ -18,8 +22,11 @@ class CardCommandHandler
         $cardAggregateRoot = $this->repository->retrieve($id);
 
         try {
-            if ($command instanceof CreateCard) {
-                $cardAggregateRoot->createCard($command);
+            foreach ($this->commandsMapping as $commandClass => $method) {
+                if ($command instanceof $commandClass) {
+                    $cardAggregateRoot->{$method}($command);
+                    break;
+                }
             }
         } finally {
             $this->repository->persist($cardAggregateRoot);

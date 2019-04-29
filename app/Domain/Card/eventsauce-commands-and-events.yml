@@ -1,12 +1,12 @@
 namespace: App\Domain\Card
 
 types:
-  cardId:
-    type: CardId
-    serializer: >
-      {param}->toString()
-    deserializer: >
-      CardId::fromString({param})
+    cardId:
+        type: CardId
+        serializer: >
+            {param}->toString()
+        deserializer: >
+            CardId::fromString({param})
 
 commands:
     CreateCard:
@@ -17,6 +17,14 @@ commands:
                 type: string
             number:
                 type: string
+    RechargeCard:
+        fields:
+            id:
+                type: cardId
+            number:
+                type: string
+            phone:
+                type: string
 events:
     CardCreated:
         fields:
@@ -25,4 +33,12 @@ events:
             amount:
                 type: string
             number:
+                type: string
+    CardRecharged:
+        fields:
+            id:
+                type: cardId
+            number:
+                type: string
+            phone:
                 type: string

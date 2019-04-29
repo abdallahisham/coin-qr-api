@@ -17,17 +17,20 @@ final class CardEntity
 
     public static function fromObject($object)
     {
-        return new static($object->amount, $object->number, $object->status);
+        return new self(
+            $object->amount,
+            $object->number,
+            $object->status
+        );
     }
 
     public static function fromArray(array $data)
     {
-        $card = new self();
-        $card->setAmount($data['amount']);
-        $card->setNumber($data['number']);
-        $card->setStatus($data['status']);
-
-        return $card;
+        return new self(
+            $data['amount'],
+            $data['number'],
+            $data['status'],
+        );
     }
 
     public function getAmount()
@@ -58,5 +61,10 @@ final class CardEntity
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    public function isValid()
+    {
+        return 0 === $this->status;
     }
 }
