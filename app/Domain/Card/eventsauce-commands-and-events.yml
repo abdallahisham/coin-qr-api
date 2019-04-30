@@ -23,7 +23,7 @@ commands:
                 type: cardId
             number:
                 type: string
-            phone:
+            user:
                 type: string
 events:
     CardCreated:
@@ -40,5 +40,5 @@ events:
                 type: cardId
             number:
                 type: string
-            phone:
+            user:
                 type: string

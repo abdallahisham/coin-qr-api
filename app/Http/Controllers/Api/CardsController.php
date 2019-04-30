@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Domain\Card\CardCommandHandler;
 use App\Domain\Card\CardId;
 use App\Domain\Card\CreateCard;
+use App\Domain\Card\RechargeCard;
 use App\Domain\Card\Repositories\CardRepository;
-use App\Domain\Common\UserEntity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CardCreateRequest;
 use App\Http\Responses\MessageResponse;
@@ -50,12 +50,13 @@ class CardsController extends Controller
     public function recharge(Request $request)
     {
         $card = $this->repository->findByNumber(request('number'));
-        $user = UserEntity::fromObject($request->user());
+        $user = $request->user();
 
         if ($card->isValid()) {
             $this->commandHandler->handle(new RechargeCard(
                 CardId::create(),
                 $card->getNumber(),
+                $user->id
             ));
 
             return new MessageResponse('Card charged successfully');

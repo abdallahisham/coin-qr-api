@@ -8,6 +8,7 @@ class CardCommandHandler
 
     protected $commandsMapping = [
             CreateCard::class => 'createCard',
+            RechargeCard::class => 'rechargeCard',
     ];
 
     public function __construct(CardAggregateRootRepository $repository)

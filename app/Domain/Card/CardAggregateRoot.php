@@ -23,4 +23,18 @@ class CardAggregateRoot implements AggregateRoot
     {
         // Do nothing for now
     }
+
+    public function rechargeCard(RechargeCard $command)
+    {
+        $this->recordThat(new CardRecharged(
+            $command->id(),
+            $command->number(),
+            $command->user()
+        ));
+    }
+
+    public function applyCardRecharged(CardRecharged $event)
+    {
+        // Do nothing for now
+    }
 }

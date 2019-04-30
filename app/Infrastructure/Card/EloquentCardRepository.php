@@ -19,6 +19,28 @@ class EloquentCardRepository implements CardRepository
     {
         $model = $this->model->where('number', $number)->firstOrFail();
 
-        return CardEntity::fromObject($model);
+        $card = CardEntity::fromObject($model);
+        $card->setId($model->id);
+
+        return $card;
+    }
+
+    public function persist(CardEntity $card): void
+    {
+        if ($card->getId()) {
+            $model = $this->model->findOrFail($card->getId());
+            $model->number = $card->getNumber();
+            $model->amount = $card->getAmount();
+            $model->status = $card->getStatus();
+
+            $model->save();
+        } else {
+            $model = new Card();
+            $model->number = $card->getNumber();
+            $model->amount = $card->getAmount();
+            $model->status = $card->getStatus();
+
+            $model->save();
+        }
     }
 }

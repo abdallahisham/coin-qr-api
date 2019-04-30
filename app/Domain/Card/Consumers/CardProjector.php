@@ -3,7 +3,9 @@
 namespace App\Domain\Card\Consumers;
 
 use App\Domain\Card\CardCreated;
+use App\Domain\Card\CardRecharged;
 use App\Domain\Card\Jobs\CreateCardJob;
+use App\Domain\Card\Jobs\RechargeCardJob;
 use App\Domain\Common\JobDispatcher;
 use EventSauce\EventSourcing\Consumer;
 use EventSauce\EventSourcing\Message;
@@ -28,7 +30,11 @@ class CardProjector implements Consumer
             ));
 
             return;
-        } elseif ($event) {
+        } elseif ($event instanceof CardRecharged) {
+            $this->dispatcher->dispatch(new RechargeCardJob(
+                $event->number(),
+                $event->user()
+            ));
         }
     }
 }

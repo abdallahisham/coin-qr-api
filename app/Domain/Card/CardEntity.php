@@ -4,6 +4,7 @@ namespace App\Domain\Card;
 
 final class CardEntity
 {
+    private $id = null;
     private $amount;
     private $number;
     private $status;
@@ -31,6 +32,16 @@ final class CardEntity
             $data['number'],
             $data['status'],
         );
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     public function getAmount()

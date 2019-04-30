@@ -18,5 +18,6 @@ class GenerateCardTest extends TestCase
         ]);
 
         $response->assertJsonFragment(['httpCode' => 200]);
+        $response->assertJsonFragment(['msg' => 'Card created Successfully']);
     }
 }
