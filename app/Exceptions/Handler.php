@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Http\Responses\MessageResponse;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -45,12 +46,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof TransactionNotCompleted) {
-            return new Response([
-                'httpCode' => $exception->getCode(),
-                'msg' => $exception->getMessage(),
-            ]);
+        if ($request->wantsJson()) {
+            return new MessageResponse($exception->getMessage(), $exception->getCode());
         }
+
+        session()->flash($exception->getMessage());
 
         return parent::render($request, $exception);
     }
