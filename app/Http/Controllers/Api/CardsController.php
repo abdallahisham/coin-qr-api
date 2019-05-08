@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CardCreateRequest;
 use App\Http\Responses\MessageResponse;
 use App\Http\Responses\QrCodeResponse;
-use App\Models\Card;
 use Illuminate\Http\Request;
 
 class CardsController extends Controller
@@ -28,7 +27,7 @@ class CardsController extends Controller
     public function generate(CardCreateRequest $request)
     {
         [$amount, $type] = $request->prepared();
-        $number = Card::newCardNumber();
+        $number = $this->repository->nextCardNumber();
 
         $this->commandHandler->handle(new CreateCard(
             CardId::create(),

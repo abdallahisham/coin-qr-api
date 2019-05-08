@@ -19,7 +19,6 @@
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
         "nexmo/client": "^1.6",
-        "prettus/l5-repository": "^2.6",
         "spatie/laravel-eventsauce": "^1.0"
     },
     "require-dev": {

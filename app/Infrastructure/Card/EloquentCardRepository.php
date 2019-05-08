@@ -29,18 +29,26 @@ class EloquentCardRepository implements CardRepository
     {
         if ($card->getId()) {
             $model = $this->model->findOrFail($card->getId());
-            $model->number = $card->getNumber();
-            $model->amount = $card->getAmount();
-            $model->status = $card->getStatus();
-
-            $model->save();
         } else {
             $model = new Card();
-            $model->number = $card->getNumber();
-            $model->amount = $card->getAmount();
-            $model->status = $card->getStatus();
-
-            $model->save();
         }
+        $model->number = $card->getNumber();
+        $model->amount = $card->getAmount();
+        $model->status = $card->getStatus();
+
+        $model->save();
+    }
+
+    public function nextCardNumber(): string
+    {
+        $timeFraction = time() % 10000;
+        $randomNumber = rand(11111111111, 99999999999);
+
+        $number = "{$timeFraction}{$randomNumber}";
+        if (0 !== $this->model->where('number', $number)->count()) {
+            return $this->newCardNumber();
+        }
+
+        return $number;
     }
 }

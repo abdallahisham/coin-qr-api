@@ -18,7 +18,7 @@ class EloquentUserRepository implements UserRepository
     {
         $model = $this->model->findOrFail($id);
 
-        return UserEntity::fromObject();
+        return UserEntity::fromObject($model);
     }
 
     public function findByPhone(string $phone): UserEntity
@@ -28,14 +28,18 @@ class EloquentUserRepository implements UserRepository
         return UserEntity::fromObject($model);
     }
 
-    public function update(UserEntity $user)
+    public function persist(UserEntity $user)
     {
-        $model = $this->model->where('phone', $phone)->firstOrFail();
-
+        if ($user->getId()) {
+            $model = $this->model->findOrFail($user->getId());
+        } else {
+            $model = new User();
+        }
         $model->name = $user->getName();
         $model->phone = $user->getPhone();
         $model->balance = $user->getBalance();
         $model->suspended_balance = $user->getSuspendedBalance();
+
         $model->save();
 
         return true;

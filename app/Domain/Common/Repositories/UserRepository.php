@@ -10,5 +10,5 @@ interface UserRepository
 
     public function findByPhone(string $phone): UserEntity;
 
-    public function update(UserEntity $user);
+    public function persist(UserEntity $user);
 }

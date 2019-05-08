@@ -23,18 +23,19 @@ class CardProjector implements Consumer
     {
         $event = $message->event();
 
-        if ($event instanceof CardCreated) {
-            $this->dispatcher->dispatch(new CreateCardJob(
-                $event->amount(),
-                $event->number()
-            ));
-
-            return;
-        } elseif ($event instanceof CardRecharged) {
-            $this->dispatcher->dispatch(new RechargeCardJob(
-                $event->number(),
-                $event->user()
-            ));
+        switch (get_class($event)) {
+            case CardCreated::class:
+                $this->dispatcher->dispatch(new CreateCardJob(
+                    $event->amount(),
+                    $event->number()
+                ));
+                break;
+            case CardRecharged::class:
+                $this->dispatcher->dispatch(new RechargeCardJob(
+                    $event->number(),
+                    $event->user()
+                ));
+            break;
         }
     }
 }
