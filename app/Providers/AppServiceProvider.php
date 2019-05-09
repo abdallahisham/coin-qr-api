@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Domain\Card\Repositories\CardRepository;
+use App\Domain\Common\Repositories\UserRepository;
 use App\Infrastructure\Card\EloquentCardRepository;
+use App\Infrastructure\Common\EloquentUserRepository;
 use App\Services\Contracts\SmsServiceInterface;
 use App\Services\NexmoSmsService;
 use Illuminate\Http\Resources\Json\Resource;
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public $bindings = [
         SmsServiceInterface::class => NexmoSmsService::class,
         CardRepository::class => EloquentCardRepository::class,
+        UserRepository::class => EloquentUserRepository::class,
     ];
 
     /**

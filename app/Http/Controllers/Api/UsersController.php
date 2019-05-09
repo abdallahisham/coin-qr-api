@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Domain\Common\Repositories\UserRepository;
 use App\Events\UserLoggedIn;
-use App\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRegisterRequest;
+use App\Http\Responses\MessageResponse;
+use App\User;
+use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
+    protected $repository;
+
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function index()
     {
-        return User::all();
+        return $this->repository->findAll();
     }
 
     public function register(UserRegisterRequest $request)
@@ -42,15 +51,9 @@ class UsersController extends Controller
         if ($user->password === $otp || '100200' == $otp) {
             $user->generateToken();
 
-            return [
-                'httpCode' => 200,
-                'token' => $user->token,
-            ];
+            return new MessageResponse('', 200, ['token' => $user->token()]);
         } else {
-            return [
-                'httpCode' => 400,
-                'msg' => 'One Time Password you entered is wrong',
-            ];
+            return new MessageResponse('One Time Password you entered is wrong', 400);
         }
     }
 }

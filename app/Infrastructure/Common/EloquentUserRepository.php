@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Common;
 
 use App\Domain\Common\Repositories\UserRepository;
+use App\Domain\Common\UserEntity;
 use App\User;
 
 class EloquentUserRepository implements UserRepository
@@ -19,6 +20,15 @@ class EloquentUserRepository implements UserRepository
         $model = $this->model->findOrFail($id);
 
         return UserEntity::fromObject($model);
+    }
+
+    public function findAll($pagination = 0)
+    {
+        if ($pagination) {
+            $this->model->paginate($pagination)->get()->all();
+        }
+
+        return User::all();
     }
 
     public function findByPhone(string $phone): UserEntity
