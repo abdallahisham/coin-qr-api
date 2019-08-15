@@ -9,14 +9,14 @@ interface CardRepository
     /**
      * Retieve card by its number.
      *
-     * @param string $number [description]
+     * @param string $number
      *
      * @return CardEntity
      */
     public function findByNumber(string $number): CardEntity;
 
     /**
-     * Persists the card into database.
+     * Persists the card into storage.
      *
      * @param CardEntity $card
      */
@@ -25,7 +25,7 @@ interface CardRepository
     /**
      * Generates unique new card.
      *
-     * @return string - String of card number
+     * @return string - String of unique card number
      */
     public function nextCardNumber(): string;
 }
